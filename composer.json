@@ -1,0 +1,23 @@
+{
+  "name": "huluwa/directory",
+  "description": "目录及文件操作工具",
+  "keywords": ["directory" , "file"],
+  "homepage": "http://git.huluwa.cc/liumei/huluwa-directory",
+  "type": "library",
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "liumeishengqi",
+      "email": "liumapp.com@gmail.com",
+      "homepage": "http://www.liumapp.com"
+    }
+  ],
+  "require": {
+    "php": ">=5.1"
+  },
+  "autoload": {
+    "psr-4": {
+      "huluwa\\directory\\": "src/"
+    }
+  }
+}
