@@ -1,11 +1,11 @@
 # directory
 
-> yii2框架下对于目录及目录下文件操作的工具
+> php下对于目录及目录下文件操作的工具
 
 ##使用方法
 
      $lmD = new Directory();
-     $lmD->basePath = '/usr/local/var/www/';
+     $lmD->setBasePath('/usr/local/var/www/');
      $lmD->buildPath('img/a' , 0755);
      $lmD->buildPath('img/b' , 0755);
      $lmD->buildPath('img/c' , 0755);
