@@ -2,7 +2,7 @@
 
 > php下对于目录及目录下文件操作的工具
 
-##使用方法
+## 使用方法
 
      $lmD = new Directory();
      $lmD->setBasePath('/usr/local/var/www/');
