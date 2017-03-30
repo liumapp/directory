@@ -92,6 +92,7 @@ class Directory
             fclose($file);
             chmod($path . $fileName , $permission);
         }
+        return $path . $fileName;
     }
 
     public function removeDirs ($path , array $except = [])
