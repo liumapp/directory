@@ -12,7 +12,7 @@
      $lmD->buildFile('img/a/a.txt' , 0755);
      $lmD->buildFile('img/b/b.txt' , 0755);
      $lmD->buildFile('img/c/c.txt' , 0755);
-     $lmD->removeDirs('img/' , ['a']);//img目录下除了a目录以外其他目录全部删除掉
+     $lmD->removeDirs('img/' , ['a']);//img目录下除了a以外其他全部删除掉
      
      
 > 上述代码执行后会产生一个/usr/local/var/www/img/a/a.txt文件，b.txt和c.txt存在过，但之后被删除了。

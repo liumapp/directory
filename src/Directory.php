@@ -14,77 +14,91 @@ class Directory
 
     public function getAbsolutPath ($path)
     {
+        return $this->basePath . $path;
+    }
+
+    public function chkBasePath ()
+    {
+        
+    }
+
+    public function chkPath ()
+    {
 
     }
 
-    public function buildPath ($path = '', $permission = 0755)
+    public function strip ($dir)
     {
-        $path = $this->basePath . $path;
-        if (!file_exists($path)) {
-            mkdir($path);
-            chmod($path , $permission);
+        return array_diff(explode('/' , $dir) , explode('/' , $this->basePath));
+    }
+
+
+    public function buildPath ($path = '', $permission = 0777)
+    {
+        $dir = $this->basePath . $path;
+        $stripDirs = $this->strip($dir);
+        return $this->chkDir($stripDirs , $permission);
+    }
+
+    public function buildFile ($path , $permission = 0777)
+    {
+        $stripDirs = $this->strip($this->basePath . $path);
+        $fileName = array_pop($stripDirs);
+        $path = $this->chkDir($stripDirs);
+
+        if (!file_exists($path . $fileName)) {
+            $file = fopen($path . $fileName , 'w+b');
+            fclose($file);
+            chmod($path . $fileName , $permission);
         }
     }
 
-    public function buildFile ($path , $permission)
+    public function removeDirs ($path , array $except = [])
     {
-
-    }
-
-    public function removeDirs ($path , array $except)
-    {
-
-    }
-
-    protected function prepareFile ()
-    {
-        $base = \Yii::getAlias('@frontend') . '/web/';
-        $time = time();
-        $date = date('YmdH' , $time);
-
-        if (!file_exists($base . 'img/')) {
-            mkdir($base . 'img/');
-            chmod($base . 'img/' , 0777);
-        }
-
-        if (!file_exists($base . 'img/' . $date)) {
-            mkdir($base . 'img/' . $date);
-            chmod($base . 'img/' . $date , 0777);
-        }
-
-        $fileName = $base . 'img/' . $date . '/code' . $time . '.png';
-        $file = fopen( $fileName, 'w+b');
-        fclose($file);
-        chmod($fileName , 0777);
-        $this->codeUrl = './img/' . $date . '/code' . $time . '.png';
-
-        $this->deleteDirs(scandir($base . 'img/') , [$date , '.' , '..'] , $base . 'img/');
-
-        return $fileName;
-    }
-
-    private function deleteDirs ($dirs , $except , $basePath)
-    {
+        $stripDirs = $this->strip($this->basePath . $path);
+        $tmp = $this->chkDir($stripDirs);
+        $dirs = scandir($tmp);
         foreach ($dirs as $dir) {
             if (! in_array($dir , $except)) {
-                $this->deleteDir($dir , $basePath);
+                if ($dir == '.' || $dir == '..') {
+                    continue;
+                }
+                $this->removeDir($tmp . $dir);
             }
         }
     }
 
-    private function deleteDir ($dir , $basePath)
+    public function removeDir ($path)
     {
-        $name = opendir($basePath . $dir);
-        while($file = readdir($name)) {
+        $name = opendir($path);
+        while ($file = readdir($name)) {
             if ($file == '.' || $file == '..') {
                 continue;
             }
-            if (is_file($basePath . $dir . '/' . $file)) {
-                unlink($basePath . $dir . '/' . $file);
+            if (is_file($path . '/' . $file)) {
+                unlink($path . '/' . $file);
             }
+            if (is_dir($path . '/' . $file)) {
+                $this->removeDir($path . '/' . $file);
+            }
+        }
+        return rmdir($path);
+    }
+
+    protected function chkDir (array $stripDirs , $permission = 0777)
+    {
+        $tmp = $this->basePath;
+        foreach ( $stripDirs as $stripDir ) {
+
+            if (!file_exists($tmp . $stripDir )) {
+                mkdir($tmp . $stripDir);
+                chmod($tmp . $stripDir, $permission);
+            }
+            $tmp = $tmp . $stripDir . '/';
 
         }
-        rmdir($basePath . $dir);
+        return $tmp;
     }
+
 
 }
