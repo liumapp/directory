@@ -12,10 +12,20 @@ class Directory
 {
     protected $basePath = '/';
 
+    /**
+     * @var \huluwa\directory\file\File;
+     */
+    public $file;
+
     public function setBasePath ($basePath)
     {
         $this->basePath = $basePath;
         $this->chkBasePath();
+    }
+
+    public function getBasePath ()
+    {
+        return $this->basePath;
     }
 
     public function getAbsolutPath ($path)
