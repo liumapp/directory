@@ -1,8 +1,8 @@
 {
-  "name": "huluwa/directory",
+  "name": "liumapp/directory",
   "description": "目录及文件操作工具",
   "keywords": ["directory" , "file"],
-  "homepage": "http://git.huluwa.cc/liumei/huluwa-directory",
+  "homepage": "http://git.huluwa.cc/liumei/directory",
   "type": "library",
   "license": "MIT",
   "authors": [
